@@ -99,29 +99,6 @@ abstract class AbstractLogger implements LoggerInterface
     }
     
     /**
-     * Checks whether context contains exception or not.
-     * 
-     * @param array $context The context.
-     * @return bool True if context contains exception. False otherwise.
-     */
-    protected function hasException(array $context): bool
-    {
-        return isset($context['exception']) && ($context['exception'] instanceof \Exception);
-    }
-    
-    /**
-     * Checks whether a value is (convertable to) string or not.
-     * 
-     * @param mixed $value Value to be checked.
-     * @return bool True if the value is (convertable to) string.
-     */
-    protected function isString($value): bool
-    {
-        return is_string($value)
-            || (is_object($value) && method_exists($value, '__toString'));
-    }
-    
-    /**
      * Checks whether a string is a valid context name or not.
      * 
      * @param string $name String to be checked.
@@ -133,5 +110,28 @@ abstract class AbstractLogger implements LoggerInterface
         // only allow a-z, A-Z, 0-9, underscore, and period.
         // in this case, regex is faster than characters comparison
         return !preg_match('/[^\d\w\.]/', $name);
+    }
+    
+    /**
+     * Checks whether context contains exception or not.
+     * 
+     * @param array $context The context.
+     * @return bool True if context contains exception. False otherwise.
+     */
+    protected function contextHasException(array $context): bool
+    {
+        return isset($context['exception']) && ($context['exception'] instanceof \Exception);
+    }
+    
+    /**
+     * Checks whether a value is (convertable to) string or not.
+     * 
+     * @param mixed $value Value to be checked.
+     * @return bool True if the value is (convertable to) string.
+     */
+    private function isString($value): bool
+    {
+        return is_string($value)
+            || (is_object($value) && method_exists($value, '__toString'));
     }
 }

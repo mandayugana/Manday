@@ -6,14 +6,17 @@
  * and open the template in the editor.
  */
 
-namespace Manday\Container\Exception;
+namespace Manday\Database;
 
 /**
- * Description of ClassNotFoundException
  *
  * @author Manda Yugana
  */
-class ClassNotFoundException extends \Exception
+interface TableInterface
 {
+    public function read();
     
+    public function save();
+    
+    public function delete();
 }

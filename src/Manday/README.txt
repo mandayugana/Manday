@@ -1,0 +1,1 @@
+Load Manday.php file to use framework. It will load and register the autoloader.

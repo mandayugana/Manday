@@ -6,14 +6,12 @@
  * and open the template in the editor.
  */
 
-namespace Manday\Container\Exception;
+namespace Manday\Database\Condition;
 
 /**
- * Description of ClassNotBoundException
  *
  * @author Manda Yugana
  */
-class ClassNotBoundException extends \Exception
-{
-    
+interface ConditionInterface {
+    public function __toString(): string;
 }

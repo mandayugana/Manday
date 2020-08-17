@@ -13,7 +13,7 @@ abstract class AbstractLogger implements LoggerInterface
      */
     public function emergency(string $tag, string $message, array $context = []): void
     {
-        $this->log(LogLevel::EMERGENCY, $message, $context);
+        $this->log($tag, $message, $context, LogLevel::EMERGENCY);
     }
     
     /**
@@ -21,7 +21,7 @@ abstract class AbstractLogger implements LoggerInterface
      */
     public function alert(string $tag, string $message, array $context = []): void
     {
-        $this->log(LogLevel::ALERT, $message, $context);
+        $this->log($tag, $message, $context, LogLevel::ALERT);
     }
     
     /**
@@ -29,7 +29,7 @@ abstract class AbstractLogger implements LoggerInterface
      */
     public function critical(string $tag, string $message, array $context = []): void
     {
-        $this->log(LogLevel::CRITICAL, $message, $context);
+        $this->log($tag, $message, $context, LogLevel::CRITICAL);
     }
     
     /**
@@ -37,7 +37,7 @@ abstract class AbstractLogger implements LoggerInterface
      */
     public function warning(string $tag, string $message, array $context = []): void
     {
-        $this->log(LogLevel::WARNING, $message, $context);
+        $this->log($tag, $message, $context, LogLevel::WARNING);
     }
     
     /**
@@ -45,7 +45,7 @@ abstract class AbstractLogger implements LoggerInterface
      */
     public function error(string $tag, string $message, array $context = []): void
     {
-        $this->log(LogLevel::ERROR, $message, $context);
+        $this->log($tag, $message, $context, LogLevel::ERROR);
     }
     
     /**
@@ -53,7 +53,7 @@ abstract class AbstractLogger implements LoggerInterface
      */
     public function notice(string $tag, string $message, array $context = []): void
     {
-        $this->log(LogLevel::NOTICE, $message, $context);
+        $this->log($tag, $message, $context, LogLevel::NOTICE);
     }
     
     /**
@@ -61,7 +61,7 @@ abstract class AbstractLogger implements LoggerInterface
      */
     public function info(string $tag, string $message, array $context = []): void
     {
-        $this->log(LogLevel::INFO, $message, $context);
+        $this->log($tag, $message, $context, LogLevel::INFO);
     }
     
     /**
@@ -69,7 +69,7 @@ abstract class AbstractLogger implements LoggerInterface
      */
     public function debug(string $tag, string $message, array $context = []): void
     {
-        $this->log(LogLevel::DEBUG, $message, $context);
+        $this->log($tag, $message, $context, LogLevel::DEBUG);
     }
     
     /**
@@ -81,10 +81,13 @@ abstract class AbstractLogger implements LoggerInterface
         if (isset($levels[$level]) === false) {
             throw new InvalidArgumentException($level);
         }
-        $loggerLevel = $levels[$level];
-        $completeMessage = $this->interpolate($message, $context);
 
-        $this->writeLog($tag, $completeMessage, $context, $loggerLevel);
+        $this->writeLog(
+            $tag,
+            $this->interpolate($message, $context),
+            $context,
+            $levels[$level]
+        );
     }
 
     /**

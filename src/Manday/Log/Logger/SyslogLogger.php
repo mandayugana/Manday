@@ -4,40 +4,33 @@ namespace Manday\Log\Logger;
 
 use Manday\Log\Logger\AbstractLogger;
 use Manday\Log\LogLevel;
-use Manday\Log\Exception\InvalidArgumentException;
 
 class SyslogLogger extends AbstractLogger
 {
     /**
-     * Maps logger's log level to PHP-syslog's severity.
-     * 
-     * @var array
+     * {@inheritdoc}
      */
-    protected $map = [
-        LogLevel::EMERGENCY => \LOG_EMERG,
-        LogLevel::ALERT => \LOG_ALERT,
-        LogLevel::CRITICAL => \LOG_CRIT,
-        LogLevel::ERROR => \LOG_ERR,
-        LogLevel::WARNING => \LOG_WARNING,
-        LogLevel::NOTICE => \LOG_NOTICE,
-        LogLevel::INFO => \LOG_INFO,
-        LogLevel::DEBUG => \LOG_DEBUG,
-    ];
-    
+    protected function writeLog(string $tag, string $message, array $context = [], $loggerLevel): void
+    {
+        openlog($tag, \LOG_NDELAY | \LOG_PID, \LOG_USER);
+        syslog($loggerLevel, $message);
+        closelog();
+    }
+
     /**
      * {@inheritdoc}
-     * 
-     * @throws \Manday\Log\Exception\InvalidArgumentException If log level is
-     * invalid.
      */
-    public function log(string $tag, string $message, array $context = [], $level = LogLevel::INFO): void
+    protected function mapLevels(): array
     {
-        if (!isset($this->map[$level])) {
-            throw new InvalidArgumentException($level);
-        }
-        
-        openlog($tag, \LOG_NDELAY | \LOG_PID, \LOG_USER);
-        syslog($this->map[$level], $this->interpolate($message, $context));
-        closelog();
+        return [
+            LogLevel::EMERGENCY => \LOG_EMERG,
+            LogLevel::ALERT => \LOG_ALERT,
+            LogLevel::CRITICAL => \LOG_CRIT,
+            LogLevel::ERROR => \LOG_ERR,
+            LogLevel::WARNING => \LOG_WARNING,
+            LogLevel::NOTICE => \LOG_NOTICE,
+            LogLevel::INFO => \LOG_INFO,
+            LogLevel::DEBUG => \LOG_DEBUG,
+        ];
     }
 }

@@ -7,12 +7,12 @@ namespace Manday\Log;
  */
 class LogLevel
 {
-    public const EMERGENCY = 'emergency';
-    public const ALERT     = 'alert';
-    public const CRITICAL  = 'critical';
-    public const ERROR     = 'error';
-    public const WARNING   = 'warning';
-    public const NOTICE    = 'notice';
-    public const INFO      = 'info';
-    public const DEBUG     = 'debug';
+    public const EMERGENCY = 1;
+    public const ALERT     = 2;
+    public const CRITICAL  = 3;
+    public const ERROR     = 4;
+    public const WARNING   = 5;
+    public const NOTICE    = 6;
+    public const INFO      = 7;
+    public const DEBUG     = 8;
 }

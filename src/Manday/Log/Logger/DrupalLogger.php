@@ -10,7 +10,6 @@ namespace Manday\Log\Logger;
 
 use Manday\Log\Logger\AbstractLogger;
 use Manday\Log\LogLevel;
-use Manday\Log\Exception\InvalidArgumentException;
 
 /**
  * Description of DrupalLogger
@@ -19,39 +18,56 @@ use Manday\Log\Exception\InvalidArgumentException;
  */
 class DrupalLogger extends AbstractLogger
 {
-    protected $map = [
-        LogLevel::EMERGENCY => \WATCHDOG_EMERGENCY,
-        LogLevel::ALERT => \WATCHDOG_ALERT,
-        LogLevel::CRITICAL => \WATCHDOG_CRITICAL,
-        LogLevel::ERROR => \WATCHDOG_ERROR,
-        LogLevel::WARNING => \WATCHDOG_WARNING,
-        LogLevel::NOTICE => \WATCHDOG_NOTICE,
-        LogLevel::INFO => \WATCHDOG_INFO,
-        LogLevel::DEBUG => \WATCHDOG_DEBUG,
-    ];
-    
     /**
      * {@inheritdoc}
      */
-    public function log(string $tag, string $message, array $context = array(), $level = loglevel::INFO): void
+    protected function writeLog(string $tag, string $message, array $context = [], $loggerLevel): void
     {
-        if (!isset($this->map[$level])) {
-            throw new InvalidArgumentException($level);
-        }
-        
-        $interpolatedMessage = $this->interpolate($message, $context);
-        $severity = $this->map[$level];
-        $link = $context['link'] ?? null;
-        
         if (\VERSION >= '8.0') {
-            \Drupal::logger($tag)->$level($interpolatedMessage);
+            switch ($loggerLevel) {
+                case \WATCHDOG_EMERGENCY:
+                    \Drupal::logger($tag)->emergency($message);
+                case \WATCHDOG_ALERT:
+                    \Drupal::logger($tag)->alert($message);
+                case \WATCHDOG_CRITICAL:
+                    \Drupal::logger($tag)->critical($message);
+                case \WATCHDOG_ERROR:
+                    \Drupal::logger($tag)->error($message);
+                case \WATCHDOG_WARNING:
+                    \Drupal::logger($tag)->warning($message);
+                case \WATCHDOG_NOTICE:
+                    \Drupal::logger($tag)->notice($message);
+                case \WATCHDOG_DEBUG:
+                    \Drupal::logger($tag)->debug($message);
+                case \WATCHDOG_INFO:
+                default:
+                    \Drupal::logger($tag)->info($message);
+            }
         } elseif (\VERSION >= '6.0') {
             // Drupal 6 and 7
-            watchdog($tag, $interpolatedMessage, $context, $severity, $link);
+            $link = $context['link'] ?? null;
+            watchdog($tag, $message, $[], $loggerLevel, $link);
         } else {
             // Drupal 5 and earlier are not supported
             // because of lack of log severity
             throw new \RuntimeException(sprintf('Drupal %s is not supported', \VERSION));
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function mapLevels(): array
+    {
+        return [
+            LogLevel::EMERGENCY => \WATCHDOG_EMERGENCY,
+            LogLevel::ALERT => \WATCHDOG_ALERT,
+            LogLevel::CRITICAL => \WATCHDOG_CRITICAL,
+            LogLevel::ERROR => \WATCHDOG_ERROR,
+            LogLevel::WARNING => \WATCHDOG_WARNING,
+            LogLevel::NOTICE => \WATCHDOG_NOTICE,
+            LogLevel::INFO => \WATCHDOG_INFO,
+            LogLevel::DEBUG => \WATCHDOG_DEBUG,
+        ];
     }
 }

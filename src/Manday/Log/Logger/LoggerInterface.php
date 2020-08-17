@@ -3,6 +3,7 @@
 namespace Manday\Log\Logger;
 
 use Manday\Log\LogLevel;
+use Manday\Log\Exception\InvalidArgumentException;
 
 /**
  * Describes a logger instance.
@@ -129,19 +130,22 @@ interface LoggerInterface
      * Example:
      * 
      * <code>
-     * $log->log(
-     *     Manday\Log\LogLevel::INFO,
+     * $logger->log(
+     *     'theTag',
      *     'Content created by {creator}',
-     *     ['creator' => 'Ujang']
+     *     ['creator' => 'Ujang'],
+     *     \Manday\Log\LogLevel::INFO
      * ); // log message becomes: "Content created by Ujang"
      * </code>
      *
      * @param string $tag Log tag.
-     * @param string $message Log message.
+     * @param string $message Message to be written to log. Message may contains
+     * variables which will be replaced by values in $context.
      * @param array $context Context of this log entry. This is an associative
      * array with context name as its keys.
-     * @param mixed $level Severity of the log.
+     * @param int $level Severity of the log.
+     * @throws \Manday\Log\Exception\InvalidArgumentException If log level is not valid.
      * @return void
      */
-    public function log(string $tag, string $message, array $context = [], $level = LogLevel::INFO): void;
+    public function log(string $tag, string $message, array $context = [], int $level = LogLevel::INFO): void;
 }

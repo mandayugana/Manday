@@ -4,6 +4,7 @@ namespace Manday\Log\Logger;
 
 use Manday\Log\LogLevel;
 use Manday\Log\Logger\LoggerInterface;
+use Manday\Log\Exception\InvalidArgumentException;
 
 abstract class AbstractLogger implements LoggerInterface
 {
@@ -74,7 +75,47 @@ abstract class AbstractLogger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    abstract public function log(string $tag, string $message, array $context = [], $level = LogLevel::INFO): void;
+    public function log(string $tag, string $message, array $context = [], int $level = LogLevel::INFO): void
+    {
+        $levels = $this->mapLevels();
+        if (isset($levels[$level]) === false) {
+            throw new InvalidArgumentException($level);
+        }
+        $loggerLevel = $levels[$level];
+        $completeMessage = $this->interpolate($message, $context);
+
+        $this->writeLog($tag, $completeMessage, $context, $loggerLevel);
+    }
+
+    /**
+     * Write log.
+     * 
+     * @param string $tag Log tag.
+     * @param string $message Message to be written to log.
+     * @param array $context Additional context of the log.
+     * @param mixed $loggerLevel Severity of the log, specific to the logger backend.
+     * @return void
+     */
+    abstract protected function writeLog(string $tag, string $message, array $context = [], $loggerLevel): void;
+
+    /**
+     * Maps internal log level to logger's log level.
+     * 
+     * @return array Map internal log level to logger's log level.
+     */
+    protected function mapLevels(): array
+    {
+        return [
+            LogLevel::EMERGENCY => LogLevel::EMERGENCY,
+            LogLevel::ALERT => LogLevel::ALERT,
+            LogLevel::CRITICAL => LogLevel::CRITICAL,
+            LogLevel::ERROR => LogLevel::ERROR,
+            LogLevel::WARNING => LogLevel::WARNING,
+            LogLevel::NOTICE => LogLevel::NOTICE,
+            LogLevel::INFO => LogLevel::INFO,
+            LogLevel::DEBUG => LogLevel::DEBUG,
+        ];
+    }
     
     /**
      * Apply context to log message.

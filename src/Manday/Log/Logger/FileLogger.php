@@ -26,15 +26,32 @@ class FileLogger extends AbstractLogger
     /**
      * {@inheritdoc}
      */
-    public function log(string $tag, string $message, array $context = [], $level = LogLevel::INFO): void
+    protected function writeLog(string $tag, string $message, array $context = [], $loggerLevel): void
     {
         $out = sprintf(
             "%s [%s] [%s] %s\n",
             date('c'),
             $tag,
-            $level,
-            $this->interpolate($message, $context)
+            $loggerLevel,
+            $message
         );
         @file_put_contents($this->filename, $out, FILE_APPEND | LOCK_EX);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function mapLevels(): array
+    {
+        return [
+            LogLevel::EMERGENCY => 'emergency',
+            LogLevel::ALERT => 'alert',
+            LogLevel::CRITICAL => 'critical',
+            LogLevel::ERROR => 'error',
+            LogLevel::WARNING => 'warning',
+            LogLevel::NOTICE => 'notice',
+            LogLevel::INFO => 'info',
+            LogLevel::DEBUG => 'debug',
+        ];
     }
 }

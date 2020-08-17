@@ -36,6 +36,8 @@ class SyslogLogger extends AbstractLogger
             throw new InvalidArgumentException($level);
         }
         
+        openlog($tag, \LOG_NDELAY | \LOG_PID, \LOG_USER);
         syslog($this->map[$level], $this->interpolate($message, $context));
+        closelog();
     }
 }

@@ -74,7 +74,7 @@ abstract class AbstractLogger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    abstract public function log(string $tag, string $message, array $context = [], $level): void;
+    abstract public function log(string $tag, string $message, array $context = [], $level = LogLevel::INFO): void;
     
     /**
      * Apply context to log message.

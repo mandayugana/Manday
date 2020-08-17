@@ -3,6 +3,7 @@
 namespace Manday\Log\Logger;
 
 use Manday\Log\Logger\AbstractLogger;
+use Manday\Log\LogLevel;
 use RuntimeException;
 
 class FileLogger extends AbstractLogger
@@ -25,7 +26,7 @@ class FileLogger extends AbstractLogger
     /**
      * {@inheritdoc}
      */
-    public function log(string $tag, string $message, array $context = [], $level): void
+    public function log(string $tag, string $message, array $context = [], $level = LogLevel::INFO): void
     {
         $out = sprintf(
             "%s [%s] [%s] %s\n",

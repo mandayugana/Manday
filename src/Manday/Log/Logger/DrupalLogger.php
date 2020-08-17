@@ -33,7 +33,7 @@ class DrupalLogger extends AbstractLogger
     /**
      * {@inheritdoc}
      */
-    public function log(string $tag, string $message, array $context = array(), $level): void
+    public function log(string $tag, string $message, array $context = array(), $level = loglevel::INFO): void
     {
         if (!isset($this->map[$level])) {
             throw new InvalidArgumentException($level);

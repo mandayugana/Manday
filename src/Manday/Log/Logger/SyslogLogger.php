@@ -30,7 +30,7 @@ class SyslogLogger extends AbstractLogger
      * @throws \Manday\Log\Exception\InvalidArgumentException If log level is
      * invalid.
      */
-    public function log(string $tag, string $message, array $context = [], $level): void
+    public function log(string $tag, string $message, array $context = [], $level = LogLevel::INFO): void
     {
         if (!isset($this->map[$level])) {
             throw new InvalidArgumentException($level);

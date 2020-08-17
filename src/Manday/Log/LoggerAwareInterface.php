@@ -2,7 +2,7 @@
 
 namespace Manday\Log;
 
-use Manday\Log\LoggerInterface;
+use Manday\Log\Logger\LoggerInterface;
 
 /**
  * Describes a logger-aware instance

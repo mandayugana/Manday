@@ -2,6 +2,8 @@
 
 namespace Manday\Log\Logger;
 
+use Manday\Log\LogLevel;
+
 /**
  * Describes a logger instance.
  *
@@ -141,5 +143,5 @@ interface LoggerInterface
      * @param mixed $level Severity of the log.
      * @return void
      */
-    public function log(string $tag, string $message, array $context = [], $level): void;
+    public function log(string $tag, string $message, array $context = [], $level = LogLevel::INFO): void;
 }

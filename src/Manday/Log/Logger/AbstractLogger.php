@@ -176,6 +176,7 @@ abstract class AbstractLogger implements LoggerInterface
     private function isString($value): bool
     {
         return is_string($value)
-            || (is_object($value) && method_exists($value, '__toString'));
+            || (is_object($value) && method_exists($value, '__toString'))
+            || is_numeric($value);
     }
 }

@@ -12,7 +12,7 @@ class SyslogLogger extends AbstractLogger
      */
     protected function writeLog(string $tag, string $message, array $context = [], $loggerLevel): void
     {
-        openlog($tag, \LOG_NDELAY | \LOG_PID, \LOG_USER);
+        openlog($tag, \LOG_NDELAY, \LOG_USER);
         syslog($loggerLevel, $message);
         closelog();
     }

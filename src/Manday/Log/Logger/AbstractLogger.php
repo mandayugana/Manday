@@ -127,7 +127,7 @@ abstract class AbstractLogger implements LoggerInterface
      * Checks whether a value is (convertable to) string or not.
      * 
      * @param mixed $value Value to be checked.
-     * @return bool True if the value is (convertable to) string.
+     * @return bool True if the value is (convertable to) string. False otherwise.
      */
     private function isString($value): bool
     {

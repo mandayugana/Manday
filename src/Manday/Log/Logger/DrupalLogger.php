@@ -19,8 +19,6 @@ use Manday\Log\Exception\InvalidArgumentException;
  */
 class DrupalLogger extends AbstractLogger
 {
-    protected const GLOBAL_SCOPE_STRING = 'global';
-    
     protected $map = [
         LogLevel::EMERGENCY => \WATCHDOG_EMERGENCY,
         LogLevel::ALERT => \WATCHDOG_ALERT,
@@ -35,15 +33,14 @@ class DrupalLogger extends AbstractLogger
     /**
      * {@inheritdoc}
      */
-    public function log($level, string $message, array $context = array()): void
+    public function log(string $tag, string $message, array $context = array(), $level): void
     {
         if (!isset($this->map[$level])) {
             throw new InvalidArgumentException($level);
         }
         
-        $tag = isset($context['tag']) ? $context['tag'] : $this->getCallerString();
         $interpolatedMessage = $this->interpolate($message, $context);
-        $severity = $this->map($level);
+        $severity = $this->map[$level];
         $link = $context['link'] ?? null;
         
         if (\VERSION >= '8.0') {
@@ -56,27 +53,5 @@ class DrupalLogger extends AbstractLogger
             // because of lack of log severity
             throw new \RuntimeException(sprintf('Drupal %s is not supported', \VERSION));
         }
-    }
-    
-    protected function getTag(array $backtraceItem)
-    {
-        $tag = isset($backtraceItem['class']) ? $backtraceItem['class'] . '::' : '';
-        $tag .= $backtraceItem['function'];
-        return $tag;
-    }
-    
-    protected function getCallerString()
-    {
-        $backtrace = debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 3);
-        if (isset($backtrace[2])) {
-            $backtraceItem = $backtrace[2];
-            if (isset($backtraceItem['class'])) {
-                $caller = "{$backtraceItem['class']}::{$backtraceItem['function']}";
-            } else {
-                $caller = $backtraceItem['function'];
-            }
-            return $caller;
-        }
-        return static::GLOBAL_SCOPE_STRING;
     }
 }

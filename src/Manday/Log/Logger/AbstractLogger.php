@@ -10,7 +10,7 @@ abstract class AbstractLogger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function emergency(string $message, array $context = []): void
+    public function emergency(string $tag, string $message, array $context = []): void
     {
         $this->log(LogLevel::EMERGENCY, $message, $context);
     }
@@ -18,7 +18,7 @@ abstract class AbstractLogger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function alert(string $message, array $context = []): void
+    public function alert(string $tag, string $message, array $context = []): void
     {
         $this->log(LogLevel::ALERT, $message, $context);
     }
@@ -26,7 +26,7 @@ abstract class AbstractLogger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function critical(string $message, array $context = []): void
+    public function critical(string $tag, string $message, array $context = []): void
     {
         $this->log(LogLevel::CRITICAL, $message, $context);
     }
@@ -34,7 +34,7 @@ abstract class AbstractLogger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function warning(string $message, array $context = []): void
+    public function warning(string $tag, string $message, array $context = []): void
     {
         $this->log(LogLevel::WARNING, $message, $context);
     }
@@ -42,7 +42,7 @@ abstract class AbstractLogger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function error(string $message, array $context = []): void
+    public function error(string $tag, string $message, array $context = []): void
     {
         $this->log(LogLevel::ERROR, $message, $context);
     }
@@ -50,7 +50,7 @@ abstract class AbstractLogger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function notice(string $message, array $context = []): void
+    public function notice(string $tag, string $message, array $context = []): void
     {
         $this->log(LogLevel::NOTICE, $message, $context);
     }
@@ -58,7 +58,7 @@ abstract class AbstractLogger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function info(string $message, array $context = []): void
+    public function info(string $tag, string $message, array $context = []): void
     {
         $this->log(LogLevel::INFO, $message, $context);
     }
@@ -66,7 +66,7 @@ abstract class AbstractLogger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function debug(string $message, array $context = []): void
+    public function debug(string $tag, string $message, array $context = []): void
     {
         $this->log(LogLevel::DEBUG, $message, $context);
     }
@@ -74,7 +74,7 @@ abstract class AbstractLogger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    abstract public function log($level, string $message, array $context = []): void;
+    abstract public function log(string $tag, string $message, array $context = [], $level): void;
     
     /**
      * Apply context to log message.

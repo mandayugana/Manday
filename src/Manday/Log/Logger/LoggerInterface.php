@@ -2,8 +2,8 @@
 
 namespace Manday\Log\Logger;
 
+use InvalidArgumentException;
 use Manday\Log\LogLevel;
-use Manday\Log\Exception\InvalidArgumentException;
 
 /**
  * Describes a logger instance.
@@ -144,7 +144,7 @@ interface LoggerInterface
      * @param array $context Context of this log entry. This is an associative
      * array with context name as its keys.
      * @param int $level Severity of the log.
-     * @throws \Manday\Log\Exception\InvalidArgumentException If log level is not valid.
+     * @throws \InvalidArgumentException If log level is not valid.
      * @return void
      */
     public function log(string $tag, string $message, array $context = [], int $level = LogLevel::INFO): void;

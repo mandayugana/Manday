@@ -2,9 +2,9 @@
 
 namespace Manday\Log\Logger;
 
+use InvalidArgumentException;
 use Manday\Log\LogLevel;
 use Manday\Log\Logger\LoggerInterface;
-use Manday\Log\Exception\InvalidArgumentException;
 
 abstract class AbstractLogger implements LoggerInterface
 {
@@ -79,7 +79,7 @@ abstract class AbstractLogger implements LoggerInterface
     {
         $levels = $this->mapLevels();
         if (isset($levels[$level]) === false) {
-            throw new InvalidArgumentException($level);
+            throw new InvalidArgumentException("Invalid log level: $level");
         }
 
         $this->writeLog(

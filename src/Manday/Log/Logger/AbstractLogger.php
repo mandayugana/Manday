@@ -8,6 +8,8 @@ use Manday\Log\Logger\LoggerInterface;
 
 abstract class AbstractLogger implements LoggerInterface
 {
+    protected $logLevel = LogLevel::INFO;
+
     /**
      * {@inheritdoc}
      */
@@ -77,6 +79,10 @@ abstract class AbstractLogger implements LoggerInterface
      */
     public function log(string $tag, string $message, array $context = [], int $level = LogLevel::INFO): void
     {
+        if ($level > $this->logLevel) {
+            return;
+        }
+
         $levels = $this->mapLevels();
         if (isset($levels[$level]) === false) {
             throw new InvalidArgumentException("Invalid log level: $level");
@@ -88,6 +94,14 @@ abstract class AbstractLogger implements LoggerInterface
             $context,
             $levels[$level]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLogLevel(int $level): void
+    {
+        $this->logLevel = $level;
     }
 
     /**

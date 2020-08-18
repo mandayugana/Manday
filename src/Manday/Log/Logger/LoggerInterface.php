@@ -148,4 +148,22 @@ interface LoggerInterface
      * @return void
      */
     public function log(string $tag, string $message, array $context = [], int $level = LogLevel::INFO): void;
+
+    /**
+     * Sets maximum log level that will be logged.
+     * 
+     * @param int $level The log level. It must be one of the following:
+     * 
+     * - \Log\LogLevel::EMERGENCY
+     * - \Log\LogLevel::ALERT
+     * - \Log\LogLevel::CRITICAL
+     * - \Log\LogLevel::ERROR
+     * - \Log\LogLevel::WARNING
+     * - \Log\LogLevel::NOTICE
+     * - \Log\LogLevel::INFO
+     * - \Log\LogLevel::DEBUG
+     * 
+     * @return void
+     */
+    public function setLogLevel(int $level): void;
 }

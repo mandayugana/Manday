@@ -33,7 +33,7 @@ interface ParametersInterface extends ArrayAccess, Countable, Serializable, Trav
      * is not found.
      * @return mixed Value of requested parameter.
      */
-    public function get(string $name, $defaultValue);
+    public function get(string $name, $defaultValue = null);
 
     /**
      * Sets a parameter.

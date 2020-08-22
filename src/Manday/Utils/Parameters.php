@@ -38,7 +38,7 @@ class Parameters extends ArrayObject implements ParametersInterface
     /**
      * {@inheritdoc}
      */
-    public function get(string $name, $defaultValue)
+    public function get(string $name, $defaultValue = null)
     {
         if ($this->offsetExists($name)) {
             return $this[$name];

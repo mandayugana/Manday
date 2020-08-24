@@ -49,11 +49,6 @@ class Client implements ClientInterface
         return $this->adapter;
     }
 
-    public function countRedirections(): int
-    {
-        return $this->redirectionsCount;
-    }
-
     public function setMaxRedirections(int $count): void
     {
         // TODO: validate $count value

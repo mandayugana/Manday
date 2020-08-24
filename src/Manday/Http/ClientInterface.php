@@ -19,8 +19,6 @@ interface ClientInterface
     public function setMaxRedirections(int $count): void;
 
     public function getMaxRedirections(): int;
-
-    public function countRedirections(): int;
     
     public function send(RequestInterface $request): ResponseInterface;
 }
